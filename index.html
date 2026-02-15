@@ -4,8 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>for_mi_amor💘</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
 <style>
+  .confessionText{
+  font-family: 'Caveat', cursive;
+  font-size: 38px;
+  color: #6B111C;
+  line-height: 1.8;
+  margin-top: 20px;
+  text-align:center;
+  max-width: 90%;
+  letter-spacing: 1px;
+}
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
@@ -82,7 +92,20 @@ video{
 <div id="app" class="container"></div>
 
 <script>
+function typeWriter(text, elementId, speed = 28){
+  let i = 0;
+  const el = document.getElementById(elementId);
+  el.innerHTML = "";
 
+  function type(){
+    if(i < text.length){
+      el.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
+}
 /* 🔊 AUDIO (changed to .mpeg only) */
 const popSound=new Audio("pop.mpeg");
 const wrongSound=new Audio("wrong.mpeg");
@@ -285,11 +308,43 @@ function showMeter(){
 }
 
 /* date */
+/* date */
 function dateBox(){
- document.getElementById("app").innerHTML=`
- <img src="og.jpeg" style="width:200px;border-radius:15px;">
+
+ document.getElementById("app").innerHTML = `
+
+ <h3>You get to choose our first date 😏💘</h3>
+ <p>Pick your favourite… I’ll make it happen 💞</p>
+
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:15px;">
+
+   <button onclick="clickSound(); pickDate('park.jpeg')">🎡 Park</button>
+
+   <button onclick="clickSound(); pickDate('movie.jpeg')">🍿 Movie</button>
+
+   <button onclick="clickSound(); pickDate('food.jpeg')">🍔 Food</button>
+
+   <button onclick="clickSound(); pickDate('clay.jpeg')">🎨 Clay date</button>
+
+   <button onclick="clickSound(); pickDate('beach.jpeg')">🌅 Beach</button>
+
+   <button onclick="clickSound(); pickDate('arcade.jpeg')">🎮 Arcade</button>
+
+ </div>
+ `;
+}
+
+let chosenDate = "";
+
+function pickDate(img){
+ chosenDate = img;
+
+ document.getElementById("app").innerHTML = `
+ <img src="og.jpeg" style="width:220px;border-radius:15px;">
  <p>Let’s get dressed and take pictures 😋📸</p>
- <button onclick="; camera()">Continue</button>`;
+
+ <button onclick="clickSound(); camera()">Continue</button>
+ `;
 }
 
 function camera(){
@@ -301,8 +356,8 @@ function camera(){
 function snap(){
  shutter.play();
  document.getElementById("app").innerHTML=`
- <img src="park.jpeg" style="width:200px;border-radius:15px;">
- <button onclick="clickSound(); finalPage()">Continue</button>`;
+<img src="${chosenDate}" style="width:200px;border-radius:15px;">
+<button onclick="clickSound(); finalPage()">Continue</button>`;
 }
 
 /* final */
@@ -310,12 +365,29 @@ function finalPage(){
  document.getElementById("app").innerHTML=`
  <video id="finalvid" controls playsinline>
   <source src="final.mp4">
- </video>
- <h3>Now you’re stuck with me forever 😈💘</h3>
- <button onclick="clickSound(); renderIntro()">Start again 💘</button>`;
- document.getElementById("finalvid").play();
-}
+ </video>`;
 
+ let v = document.getElementById("finalvid");
+ v.play();
+
+ v.onended = () => {
+   finalConfession();   // 💘 go to typing confession page
+ };
+}
+function finalConfession(){
+
+ document.getElementById("app").innerHTML = `
+   <h3>One last thing… 💘</h3>
+
+   <p id="confessionText" class="confessionText"></p>
+
+   <button onclick="clickSound(); renderIntro()">Go back to where it all started 💞</button>
+ `;
+
+ const text = "Maybe I didn’t confess in the most normal way… maybe I wrapped everything in jokes, memes, and a little bit of drama… but that’s only because I wanted to make you smile while I said it. Because the truth is, what I feel for you isn’t a joke at all. It’s something quiet, warm, and real. It’s the way you stay on my mind, the way your presence feels like comfort, and the way I keep finding myself choosing you even without trying. So even if my confession looked playful… my love for you is sincere, honest, and deeply real. 💞";
+
+ typeWriter(text, "confessionText", 50);
+}
 /* floating hearts */
 setInterval(()=>{
  let h=document.createElement("div");
