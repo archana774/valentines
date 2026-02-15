@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for_mi_amor💘</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:#6B111C;
+  overflow:hidden;
+  text-align:center;
+}
+
+.container{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(135deg,#ffe5ec,#ffc2d1);
+  padding:60px 50px;
+  border-radius:30px;
+  width:70vw;
+  max-width:750px;
+  min-height:380px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+}
+
+h2{font-size:44px;color:#D92A3B;}
+h3{font-size:28px;color:#A31D30;}
+p{font-size:22px;}
+
+button{
+ padding:14px 28px;
+ border:none;
+ border-radius:30px;
+ margin:10px;
+ cursor:pointer;
+ font-size:18px;
+ font-weight:600;
+}
+.yes{background:#28a745;color:white;}
+.no{background:#dc3545;color:white;}
+
+video{
+ width:85%;
+ max-height:260px;
+ border-radius:15px;
+}
+
+@keyframes floatUp{
+ 0%{transform:translateY(0);opacity:0;}
+ 100%{transform:translateY(-110vh);opacity:1;}
+}
+.heart{
+ position:absolute;
+ bottom:-20px;
+ animation:floatUp 6s linear infinite;
+ font-size:30px;
+}
+
+.rose{
+ position:absolute;
+ font-size:36px;
+ animation:floatUp 2s ease-out forwards;
+}
+
+.camera{
+ font-size:90px;
+ cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div id="app" class="container"></div>
+
+<script>
+
+/* 🔊 AUDIO (changed to .mpeg only) */
+const popSound=new Audio("pop.mpeg");
+const wrongSound=new Audio("wrong.mpeg");
+const yesSound=new Audio("glitter.mpeg");
+const heartbeat=new Audio("heartbeat.mpeg");
+const love=new Audio("love.mpeg");
+const shutter=new Audio("shutter.mpeg");
+
+/* helper click sound */
+function clickSound(){
+ popSound.currentTime=0;
+ popSound.play();
+}
+
+/* unlock audio */
+let audioUnlocked=false;
+function unlockAudio(){
+ if(!audioUnlocked){
+  heartbeat.play().catch(()=>{});
+  heartbeat.pause();
+  heartbeat.currentTime=0;
+  audioUnlocked=true;
+ }
+}
+
+/* history */
+let historyStack=[];
+function saveState(){historyStack.push(document.getElementById("app").innerHTML);}
+function goBack(){if(historyStack.length>0){document.getElementById("app").innerHTML=historyStack.pop();}}
+
+/* intro */
+function renderIntro(){
+ document.getElementById("app").innerHTML=`
+ <p>Hey… I wanted to tell you something… 💬</p>
+ <button onclick="unlockAudio(); clickSound(); intro2()">Open</button>`;
+}
+function intro2(){
+ saveState();
+ document.getElementById("app").innerHTML=`
+ <p>…but I’m shy 😭💘</p>
+ <button onclick="clickSound(); intro3()">Continue</button>`;
+}
+function intro3(){
+ saveState();
+ document.getElementById("app").innerHTML=`
+ <p>nvm… I’m doing this now 😤💘</p>
+ <button onclick="clickSound(); srkIntro()">Continue 🎬</button>`;
+}
+
+function srkIntro(){
+  saveState();
+  document.getElementById("app").innerHTML=`
+  <h3>Some confessions deserve a proper filmy entry… and this is mine 😏🎬💘</h3>
+  <button onclick="clickSound(); srk()">Play Scene ▶️</button>
+  <button onclick="clickSound(); goBack()">⬅️ Go back</button>
+  `;
+}
+
+/* SRK video */
+function srk(){
+ saveState();
+ document.getElementById("app").innerHTML=`
+ <video id="srkvid" controls playsinline>
+  <source src="srk.mp4">
+ </video>`;
+
+ let v=document.getElementById("srkvid");
+ v.play();
+
+ v.onended=()=>{
+   heartbeat.loop=true;
+   heartbeat.currentTime=0;
+   heartbeat.play();
+
+   document.getElementById("app").innerHTML=`
+   <h3>Ever since I saw you… I’ve been standing like this, arms open… waiting for you 😏💘</h3>
+   <p>Even SRK says… live life to the fullest like there’s no tomorrow… and for that I want you with me 💘</p>
+   <button onclick="clickSound(); showProposal()">Continue 💘</button>`;
+ };
+}
+
+/* proposal */
+function showProposal(){
+
+  heartbeat.pause();
+  heartbeat.currentTime=0;
+
+  love.currentTime=0;
+  love.play();
+
+ document.getElementById("app").innerHTML=`
+ <h2>Will You Be My Valentine? 💘</h2>
+ <button class="yes" onclick="match()">YES 💚</button>
+ <button class="no" onclick="noClick()">NO ❌</button>
+ <p id="noText"></p>`;
+}
+
+/* NO FLOW (unchanged) */
+let noIndex = 0;
+
+function noClick(){
+  wrongSound.currentTime = 0;
+  wrongSound.play();
+
+  const lines = [
+    "How about I confess in a whole desi romance 😏💘",
+    "What if I bring you flowers as pretty as you 😛💐",
+    "Fine 😤 mandi and you get chest piece 🍗",
+    "What if I literally bring the moon for you 🌙",
+    "Are you really sure 🥺",
+    "This NO button is tired 😭 please choose YES 💘"
+  ];
+
+  const textEl = document.getElementById("noText");
+
+  if(textEl.innerText === "What if I literally bring the moon for you 🌙"){
+    showSadVideoAndContinue();
+    noIndex++;
+    return;
+  }
+
+  if(textEl.innerText === "This NO button is tired 😭 please choose YES 💘"){
+    setTimeout(()=>{
+      document.getElementById("app").innerHTML=`
+        <h3>System override activated 😈💘</h3>
+        <p>Destiny has chosen YES for you 😏💘</p>
+        <button class="yes" onclick="match()">YES 💚</button>
+        <button class="no" onclick="match()">YES (but in red 😈)</button>`;
+    },500);
+    return;
+  }
+
+  textEl.innerText = lines[noIndex] || "";
+  noIndex++;
+}
+
+/* sad */
+function showSadVideoAndContinue(){
+ saveState();
+ document.getElementById("app").innerHTML=`
+ <h3>Maybe this will help you understand… 😭💔</h3>
+ <button onclick="unlockAudio(); clickSound(); playSadVideo()">Play this ▶️</button>`;
+}
+
+function playSadVideo(){
+ document.getElementById("app").innerHTML=`
+ <h3>Me without you by the way 😭💔</h3>
+ <video id="sadvid" controls playsinline>
+  <source src="sad.mp4">
+ </video>`;
+
+ let v=document.getElementById("sadvid");
+ v.play();
+
+ v.onended=()=>{
+  setTimeout(()=>{
+   showProposal();
+   document.getElementById("noText").innerText="Are you really sure 🥺";
+  },700);
+ };
+}
+
+/* match */
+function match(){
+ yesSound.play();
+ document.getElementById("app").innerHTML=`
+ <h3>Wohoo Perfect Match 😈😏</h3>
+ <video id="dogvid" controls playsinline>
+  <source src="dog.mp4">
+ </video>
+ <button onclick="clickSound(); compatibilityTest()">Next 😏</button>`;
+ document.getElementById("dogvid").play();
+}
+
+/* compatibility */
+function compatibilityTest(){
+ document.getElementById("app").innerHTML=`
+ <h3>Let’s do a compatibility test 😏💘</h3>
+ <button class="yes" onclick="clickSound(); playCompatibilityVideo()">YES 😈</button>`;
+}
+
+function playCompatibilityVideo(){
+ document.getElementById("app").innerHTML=`
+ <video id="over" controls playsinline>
+   <source src="overload.mp4">
+ </video>
+ <p>Calculating… 💻💘</p>
+ `;
+ let v=document.getElementById("over");
+ v.play();
+ v.onended=()=>{ showMeter(); };
+}
+
+function showMeter(){
+ document.getElementById("app").innerHTML=`
+ <h3>Compatibility: ∞ 💘</h3>
+ <p>Of course it’s a peak match… because I don’t lose when it comes to you 😏💘</p>
+ <p>You and me were inevitable from the start 💞</p>
+ <button onclick="clickSound(); dateBox()">Plan our first date 🎁</button>`;
+}
+
+/* date */
+function dateBox(){
+ document.getElementById("app").innerHTML=`
+ <img src="og.jpeg" style="width:200px;border-radius:15px;">
+ <p>Let’s get dressed and take pictures 😋📸</p>
+ <button onclick="; camera()">Continue</button>`;
+}
+
+function camera(){
+ document.getElementById("app").innerHTML=`
+ <div class="camera" onclick="snap()">📸</div>
+ <p>Tap camera</p>`;
+}
+
+function snap(){
+ shutter.play();
+ document.getElementById("app").innerHTML=`
+ <img src="park.jpeg" style="width:200px;border-radius:15px;">
+ <button onclick="clickSound(); finalPage()">Continue</button>`;
+}
+
+/* final */
+function finalPage(){
+ document.getElementById("app").innerHTML=`
+ <video id="finalvid" controls playsinline>
+  <source src="final.mp4">
+ </video>
+ <h3>Now you’re stuck with me forever 😈💘</h3>
+ <button onclick="clickSound(); renderIntro()">Start again 💘</button>`;
+ document.getElementById("finalvid").play();
+}
+
+/* floating hearts */
+setInterval(()=>{
+ let h=document.createElement("div");
+ h.className="heart";
+ h.style.left=Math.random()*100+"%";
+ h.innerHTML="🤍";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
+},120);
+
+/* roses pop */
+document.addEventListener("click",(e)=>{
+ let box=document.querySelector(".container");
+ if(!box.contains(e.target)){
+  let r=document.createElement("div");
+  r.className="rose";
+  r.innerHTML="🌹";
+  r.style.left=e.clientX+"px";
+  r.style.top=e.clientY+"px";
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),2000);
+  popSound.play();
+ }
+});
+
+/* start */
+renderIntro();
+
+</script>
+</body>
+</html>
